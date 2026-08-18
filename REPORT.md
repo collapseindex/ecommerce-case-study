@@ -1,7 +1,7 @@
 # July Orders Review
 
 **To:** Growth Manager
-**From:** Data Analysis
+**From:** Alex Kwon, Data Analysis
 **Date:** 2026-08-17
 **Scope:** all orders, July 1-29, 2026 (34 observed orders after deduplication; order 1029 known missing)
 **Full workings:** [FINDINGS.md](FINDINGS.md) · [sql/](sql/)

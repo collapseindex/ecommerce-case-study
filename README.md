@@ -1,5 +1,7 @@
 # E-commerce Case Study
 
+*A case study by [Alex Kwon](https://github.com/collapseindex).*
+
 A complete analyst working of a deliberately dirty e-commerce dataset: data
 quality audit, business analysis, and the report a stakeholder would actually
 receive. Grew out of session 003 in [sql-notes](https://github.com/collapseindex/sql-notes).
