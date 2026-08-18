@@ -3,7 +3,7 @@
 **To:** Growth Manager
 **From:** Data Analysis
 **Date:** 2026-08-17
-**Scope:** all orders, July 1-29, 2026 (34 orders after corrections below)
+**Scope:** all orders, July 1-29, 2026 (34 observed orders after deduplication; order 1029 known missing)
 **Full workings:** [FINDINGS.md](FINDINGS.md) · [sql/](sql/)
 
 ## Executive summary
@@ -18,9 +18,10 @@
    buy**: monitor orders at >=20% discount averaged $43 contribution per order
    against $407 for the rest. With four orders we cannot say whether discount
    depth or channel is the cause; both patterns are present.
-4. **Two records need source-system attention**: order 1029 is missing from
-   the extract entirely (its row appears overwritten by a copy of 1028), and
-   one order was filed under a region spelling the system should not accept.
+4. **Two records need source-system attention**: order 1028 is duplicated and
+   order 1029 is absent, adjacent to each other (consistent with a single
+   paste-over), and one order was filed under a region spelling the system
+   should not accept.
 
 ## Corrections applied to the data
 
@@ -45,8 +46,9 @@ understated by one unknown one.
 | Email | 9 | 0% | $1,382 |
 | Social | 7 | **57%** | **$102** |
 
-Return rates are floors: the extract records whether an order was returned as
-of export, not when, so recent orders may yet come back.
+By revenue, 70% of what Social booked came back ($451 of $644 gross). Return
+rates are floors: the extract records whether an order was returned as of
+export, not when, so recent orders may yet come back.
 
 ### Pricing: monitor discounts >=20%
 
@@ -58,9 +60,10 @@ is a mis-entry or a real clearance needs the order record.
 ### Watch item: order 1016
 
 One order of 10 mice, in a file where no other order of anything exceeds 4
-units; it alone is 42% of July mouse units. Most likely a bulk buyer, but the
-drain-and-mass-return abuse pattern predicts these units come back, which the
-current extract cannot show. No action beyond monitoring; it is excluded from
+units; it alone is 42% of July mouse units. Most likely a bulk buyer; the
+alternative risk scenario (inventory drain followed by mass return) would show
+up as these units coming back, which the current extract cannot show either
+way. No action beyond monitoring; it is excluded from
 per-order averages where it would dominate them.
 
 ### Customers

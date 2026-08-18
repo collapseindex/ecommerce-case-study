@@ -59,7 +59,7 @@ to every aggregate it drives.
 
 ## Business
 
-### B1. Deep-discounted monitors destroy per-order contribution
+### B1. Deep-discount monitor orders earned a tenth of the per-order contribution
 
 | bucket | orders | rev before returns | returned | net revenue | net contribution | per order |
 |---|--:|--:|--:|--:|--:|--:|
@@ -86,7 +86,8 @@ both explanations symmetrically.
 Found by escalating two anecdotes (keyboard returns 1012 and 1032, both
 West/Social; monitor returns implicating North/Social) into a dimension test.
 Social contributed $101.87 across an entire month: 1.8% of total contribution
-from 21% of orders. All rates are floors per L1.
+from 21% of orders, and 70% of the revenue it booked was returned ($450.69 of
+$643.56 gross). All rates are floors per L1.
 
 ## Limitations
 
