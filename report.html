@@ -1,0 +1,288 @@
+<title>July Orders Review</title>
+<style>
+  :root {
+    --paper: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e; --ink-3: #8a887f;
+    --grid: #e8e7e3; --stripe: #f5f4f1; --card: #f0efec;
+    --series: #2a78d6; --flag: #e34948; --good: #0ca30c; --critical: #d03b3b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7; --ink-3: #8a887f;
+      --grid: #33332f; --stripe: #232322; --card: #262624;
+      --series: #3987e5; --flag: #e66767; --good: #0ca30c; --critical: #d03b3b;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7; --ink-3: #8a887f;
+    --grid: #33332f; --stripe: #232322; --card: #262624;
+    --series: #3987e5; --flag: #e66767; --good: #0ca30c; --critical: #d03b3b;
+  }
+  * { margin: 0; box-sizing: border-box; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font: 16px/1.55 system-ui, "Segoe UI", sans-serif;
+    padding: 3.5rem 1.25rem 5rem;
+  }
+  .page { max-width: 780px; margin: 0 auto; }
+  .eyebrow {
+    font-size: .72rem; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink-3); margin-bottom: .75rem;
+  }
+  h1, h2 {
+    font-family: "Iowan Old Style", Charter, Georgia, serif;
+    text-wrap: balance; font-weight: 600;
+  }
+  h1 { font-size: 2.1rem; line-height: 1.15; }
+  h2 { font-size: 1.3rem; margin: 3rem 0 .35rem; }
+  .kicker { color: var(--ink-2); font-size: .92rem; margin-top: .6rem; }
+  .kicker b { color: var(--ink); font-weight: 600; }
+  section > p { color: var(--ink-2); font-size: .95rem; max-width: 62ch; margin: .5rem 0 1.1rem; }
+  section > p strong { color: var(--ink); }
+  .tiles {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--grid); border: 1px solid var(--grid); border-radius: 6px;
+    overflow: hidden; margin-top: 2.2rem;
+  }
+  @media (max-width: 620px) { .tiles { grid-template-columns: repeat(2, 1fr); } }
+  .tile { background: var(--paper); padding: .9rem 1rem 1rem; }
+  .tile .label { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+  .tile .value {
+    font-size: 1.55rem; font-weight: 650; margin-top: .2rem;
+    font-variant-numeric: tabular-nums; letter-spacing: -.01em;
+  }
+  .tile .note { font-size: .78rem; color: var(--ink-2); margin-top: .15rem; }
+  .tile .note.bad { color: var(--flag); font-weight: 600; }
+
+  /* bar charts: HTML rows, thin marks, direct labels in text ink */
+  .chart { margin: 1.2rem 0 .4rem; }
+  .chart-title { font-size: .8rem; font-weight: 600; color: var(--ink-2); margin-bottom: .55rem; }
+  .row {
+    display: grid; grid-template-columns: 92px 1fr 84px; gap: .6rem;
+    align-items: center; padding: .22rem 0;
+  }
+  .row .cat { font-size: .85rem; color: var(--ink-2); text-align: right; }
+  .row .cat small { display: block; color: var(--ink-3); font-size: .7rem; }
+  .track { position: relative; height: 16px; }
+  .bar {
+    position: absolute; inset: 1px auto 1px 0; min-width: 2px;
+    background: var(--series); border-radius: 0 4px 4px 0;
+  }
+  .bar.flagged { background: var(--flag); }
+  .track::before {
+    content: ""; position: absolute; left: 0; top: -4px; bottom: -4px;
+    border-left: 1px solid var(--grid);
+  }
+  .row .val { font-size: .85rem; font-variant-numeric: tabular-nums; color: var(--ink); }
+  .row .val small { color: var(--ink-3); }
+  .row:hover .bar, .row:focus-within .bar { filter: brightness(1.12); }
+  .row [tabindex]:focus-visible { outline: 2px solid var(--series); outline-offset: 2px; border-radius: 4px; }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: .3em;
+    font-size: .74rem; font-weight: 600; border-radius: 99px;
+    padding: .08rem .55rem; background: var(--card); color: var(--ink-2);
+  }
+  .chip.crit { color: var(--critical); }
+  table { border-collapse: collapse; width: 100%; font-size: .88rem; margin: .9rem 0; }
+  th { text-align: left; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase;
+       color: var(--ink-3); font-weight: 600; padding: .45rem .6rem; border-bottom: 1px solid var(--grid); }
+  td { padding: .5rem .6rem; border-bottom: 1px solid var(--grid); color: var(--ink-2);
+       font-variant-numeric: tabular-nums; }
+  td:first-child { color: var(--ink); }
+  tbody tr:nth-child(odd) { background: var(--stripe); }
+  .num { text-align: right; }
+  details { margin: .5rem 0 0; font-size: .85rem; color: var(--ink-2); }
+  summary { cursor: pointer; color: var(--ink-3); font-size: .78rem; }
+  .foot { margin-top: 3.5rem; padding-top: 1.2rem; border-top: 1px solid var(--grid);
+          font-size: .8rem; color: var(--ink-3); max-width: 68ch; }
+  .caveat { font-size: .8rem; color: var(--ink-3); margin-top: .5rem; }
+  .overflow { overflow-x: auto; }
+  #tip {
+    position: fixed; pointer-events: none; z-index: 10; display: none;
+    background: var(--ink); color: var(--paper); font-size: .78rem;
+    padding: .35rem .6rem; border-radius: 5px; max-width: 260px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .bar { transition: filter .12s ease; }
+  }
+</style>
+
+<div class="page">
+  <header>
+    <div class="eyebrow">Data analysis · E-commerce case study</div>
+    <h1>July Orders Review</h1>
+    <p class="kicker">Orders July 1&ndash;29, 2026 &middot; <b>34 orders</b> after corrections &middot;
+      prepared for the Growth Manager &middot; every figure independently recomputed</p>
+  </header>
+
+  <div class="tiles">
+    <div class="tile"><div class="label">Net revenue</div><div class="value">$6,076</div>
+      <div class="note">$6,790 gross, less returns</div></div>
+    <div class="tile"><div class="label">Contribution</div><div class="value">$5,623</div>
+      <div class="note">net revenue less shipping</div></div>
+    <div class="tile"><div class="label">Orders</div><div class="value">34</div>
+      <div class="note">33 distinct customers</div></div>
+    <div class="tile"><div class="label">Returned</div><div class="value">5</div>
+      <div class="note bad">4 of 5 came from Social</div></div>
+  </div>
+
+  <section>
+    <h2>Social returns most of what it sells</h2>
+    <p><strong>Social produced $102 of contribution for the month</strong>, 1.8% of the total
+      from 21% of orders: 4 of its 7 orders were returned, where every other channel sits at
+      11% or lower. Return rates are floors&mdash;the extract records no return dates, so recent
+      orders may yet come back.</p>
+
+    <div class="chart" role="img" aria-label="Net contribution by channel: Organic $2,472, Paid Search $1,667, Email $1,382, Social $102">
+      <div class="chart-title">Net contribution by channel ($)</div>
+      <div class="row"><span class="cat">Organic <small>n=9</small></span>
+        <span class="track" tabindex="0" data-tip="Organic: $2,472 contribution, 0 of 9 returned"><span class="bar" style="width:100%"></span></span>
+        <span class="val">$2,472</span></div>
+      <div class="row"><span class="cat">Paid Search <small>n=9</small></span>
+        <span class="track" tabindex="0" data-tip="Paid Search: $1,667 contribution, 1 of 9 returned (11%)"><span class="bar" style="width:67.4%"></span></span>
+        <span class="val">$1,667</span></div>
+      <div class="row"><span class="cat">Email <small>n=9</small></span>
+        <span class="track" tabindex="0" data-tip="Email: $1,382 contribution, 0 of 9 returned"><span class="bar" style="width:55.9%"></span></span>
+        <span class="val">$1,382</span></div>
+      <div class="row"><span class="cat">Social <small>n=7</small></span>
+        <span class="track" tabindex="0" data-tip="Social: $102 contribution, 4 of 7 returned (57%)"><span class="bar flagged" style="width:4.1%"></span></span>
+        <span class="val">$102</span></div>
+    </div>
+
+    <div class="chart" role="img" aria-label="Return rate by channel: Social 57%, Paid Search 11%, Organic 0%, Email 0%">
+      <div class="chart-title">Return rate (% of orders, scale 0&ndash;100)</div>
+      <div class="row"><span class="cat">Social</span>
+        <span class="track" tabindex="0" data-tip="Social: 4 of 7 orders returned"><span class="bar flagged" style="width:57%"></span></span>
+        <span class="val">57% <small>4/7</small></span></div>
+      <div class="row"><span class="cat">Paid Search</span>
+        <span class="track" tabindex="0" data-tip="Paid Search: 1 of 9 orders returned"><span class="bar" style="width:11%"></span></span>
+        <span class="val">11% <small>1/9</small></span></div>
+      <div class="row"><span class="cat">Organic</span>
+        <span class="track" tabindex="0" data-tip="Organic: 0 of 9 orders returned"><span class="bar" style="width:0.5%"></span></span>
+        <span class="val">0% <small>0/9</small></span></div>
+      <div class="row"><span class="cat">Email</span>
+        <span class="track" tabindex="0" data-tip="Email: 0 of 9 orders returned"><span class="bar" style="width:0.5%"></span></span>
+        <span class="val">0% <small>0/9</small></span></div>
+    </div>
+    <details><summary>Data table</summary>
+      <div class="overflow"><table>
+        <thead><tr><th>Channel</th><th class="num">Orders</th><th class="num">Returns</th><th class="num">Return rate</th><th class="num">Net revenue</th><th class="num">Contribution</th></tr></thead>
+        <tbody>
+          <tr><td>Organic</td><td class="num">9</td><td class="num">0</td><td class="num">0%</td><td class="num">$2,621.10</td><td class="num">$2,472.10</td></tr>
+          <tr><td>Paid Search</td><td class="num">9</td><td class="num">1</td><td class="num">11%</td><td class="num">$1,788.16</td><td class="num">$1,667.16</td></tr>
+          <tr><td>Email</td><td class="num">9</td><td class="num">0</td><td class="num">0%</td><td class="num">$1,474.30</td><td class="num">$1,381.55</td></tr>
+          <tr><td>Social</td><td class="num">7</td><td class="num">4</td><td class="num">57%</td><td class="num">$192.87</td><td class="num">$101.87</td></tr>
+        </tbody>
+      </table></div>
+    </details>
+  </section>
+
+  <section>
+    <h2>Deep monitor discounts do not pay for themselves</h2>
+    <p>Monitor orders at <strong>&ge;20% discount averaged $43 contribution per order</strong>
+      against $407 for monitors at &le;15%; two of the four deep-discount orders returned. With
+      four orders we cannot separate discount depth from channel&mdash;2 of the 4 are
+      North/Social&mdash;so this is reported as a description, not a cause.</p>
+
+    <div class="chart" role="img" aria-label="Monitor contribution per order: 15% or less discount $406.68, 20% or more discount $43.41">
+      <div class="chart-title">Monitor net contribution per order ($)</div>
+      <div class="row"><span class="cat">&le;15% off <small>n=5</small></span>
+        <span class="track" tabindex="0" data-tip="Discount 15% or less: $2,033.40 total over 5 orders, none returned"><span class="bar" style="width:100%"></span></span>
+        <span class="val">$406.68</span></div>
+      <div class="row"><span class="cat">&ge;20% off <small>n=4</small></span>
+        <span class="track" tabindex="0" data-tip="Discount 20% or more: $173.65 total over 4 orders, 2 returned; orders 1004, 1009, 1019, 1025"><span class="bar flagged" style="width:10.7%"></span></span>
+        <span class="val">$43.41</span></div>
+    </div>
+    <p class="caveat">Buckets cover all 9 monitor orders; none fall between 15% and 20%. One
+      order (1025) sold at 90% off, grossing $32.90 against $27.00 shipping&mdash;mis-entry or
+      real clearance needs the order record.</p>
+  </section>
+
+  <section>
+    <h2>Product mix</h2>
+    <div class="chart" role="img" aria-label="Contribution by product: Monitor $2,207, Headphones $1,376, Keyboard $1,147, Mouse $893">
+      <div class="chart-title">Net contribution by product ($)</div>
+      <div class="row"><span class="cat">Monitor <small>n=9</small></span>
+        <span class="track" tabindex="0" data-tip="Monitor: $2,207 contribution, 2 returns"><span class="bar" style="width:100%"></span></span>
+        <span class="val">$2,207</span></div>
+      <div class="row"><span class="cat">Headphones <small>n=9</small></span>
+        <span class="track" tabindex="0" data-tip="Headphones: $1,376 contribution, 1 return"><span class="bar" style="width:62.4%"></span></span>
+        <span class="val">$1,376</span></div>
+      <div class="row"><span class="cat">Keyboard <small>n=8</small></span>
+        <span class="track" tabindex="0" data-tip="Keyboard: $1,147 contribution, 2 returns"><span class="bar" style="width:52%"></span></span>
+        <span class="val">$1,147</span></div>
+      <div class="row"><span class="cat">Mouse <small>n=8</small></span>
+        <span class="track" tabindex="0" data-tip="Mouse: $893 contribution, 0 returns. One order (1016) is 10 units, 42% of all mouse units"><span class="bar" style="width:40.4%"></span></span>
+        <span class="val">$893</span></div>
+    </div>
+    <p class="caveat">Watch item: order 1016 is 10 mouse units in a file where no other order
+      exceeds 4 of anything&mdash;42% of July mouse units in one order. Likely a bulk buyer; the
+      drain-and-mass-return pattern predicts these units come back, which the extract cannot
+      show yet. Excluded from per-order averages it would dominate.</p>
+  </section>
+
+  <section>
+    <h2>Corrections applied to the data</h2>
+    <p>Two records need source-system attention. The pair in rows 1 and 2 is consistent with a
+      single paste-over during entry or export: totals were simultaneously
+      <strong>overstated by one known order and understated by one unknown one</strong>.</p>
+    <div class="overflow"><table>
+      <thead><tr><th>Issue</th><th>Action</th><th>Revenue impact</th></tr></thead>
+      <tbody>
+        <tr><td>Order 1028 entered twice</td><td>deduplicated</td><td>&minus;$151.98 gross</td></tr>
+        <tr><td>Order 1029 absent from extract</td><td>requested from source</td><td>unknown; revenue understated</td></tr>
+        <tr><td>Region &ldquo;west&rdquo; on order 1024</td><td>normalized to West</td><td>none (classification only)</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>What we cannot conclude yet</h2>
+    <p><span class="chip crit">&#9888; limits</span></p>
+    <p>Whether Social&rsquo;s return problem is the channel, its promotions, or its products:
+      the deep-discount monitors and the Social returns overlap, and n=4&ndash;7 cannot separate
+      them. Any trend: this is one month with no baseline. True return rates: no return dates
+      in the extract, so every rate shown is a floor.</p>
+  </section>
+
+  <section>
+    <h2>Requests, each mapped to what it settles</h2>
+    <div class="overflow"><table>
+      <thead><tr><th>Request</th><th>Settles</th></tr></thead>
+      <tbody>
+        <tr><td>Return reasons per returned order</td><td>defective/open-box vs changed-mind</td></tr>
+        <tr><td>Promotion &amp; ad detail for Social, July</td><td>what those 7 orders were acquired with</td></tr>
+        <tr><td>Order 1029 from the source system</td><td>the missing record</td></tr>
+        <tr><td>Order records for 1009, 1025</td><td>whether 50% and 90% discounts were authorized</td></tr>
+        <tr><td>Return dates &amp; policy terms</td><td>real return rates instead of floors</td></tr>
+        <tr><td>Order history, prior 12 months</td><td>baseline, seasonality, whether any of this is new</td></tr>
+        <tr><td>Post-export status of order 1016; C115 history</td><td>bulk buyer vs drain pattern</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <p class="foot">Definitions: revenue = units &times; unit price &times; (1 &minus; discount%);
+    returned orders count $0 revenue with shipping treated as sunk; contribution = net revenue
+    &minus; shipping, manufacturing cost out of scope per the brief. Basis: 34 orders after the
+    corrections above. Full workings, findings with row ids, and runnable SQL:
+    the <b>ecommerce-case-study</b> repository (FINDINGS.md, sql/00&ndash;04).</p>
+</div>
+
+<div id="tip" role="status"></div>
+<script>
+  const tip = document.getElementById("tip");
+  document.querySelectorAll("[data-tip]").forEach(el => {
+    const show = () => { tip.textContent = el.dataset.tip; tip.style.display = "block"; };
+    const hide = () => { tip.style.display = "none"; };
+    el.addEventListener("mouseenter", show);
+    el.addEventListener("mouseleave", hide);
+    el.addEventListener("focus", () => { const r = el.getBoundingClientRect();
+      tip.style.left = Math.min(r.left, innerWidth - 280) + "px";
+      tip.style.top = (r.bottom + 8) + "px"; show(); });
+    el.addEventListener("blur", hide);
+    el.addEventListener("mousemove", e => {
+      tip.style.left = Math.min(e.clientX + 14, innerWidth - 280) + "px";
+      tip.style.top = (e.clientY + 14) + "px";
+    });
+  });
+</script>

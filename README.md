@@ -21,6 +21,7 @@ request that would settle them.
 | file | what it is |
 |---|---|
 | [REPORT.md](REPORT.md) | The deliverable: what a DA would hand the Growth Manager |
+| [report.html](report.html) | The same report as a presentable page: stat tiles, charts, dark mode |
 | [FINDINGS.md](FINDINGS.md) | Every finding with its evidence, verbatim row ids, and disposition |
 | [sql/](sql/) | Numbered, runnable queries: load, sweeps, analyses |
 | [data/raw/](data/raw/) | The untouched source workbook |
