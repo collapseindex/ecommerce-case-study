@@ -36,3 +36,7 @@ python -c "import duckdb; con=duckdb.connect(); [con.sql(open(f'sql/{f}').read()
 Or open the DuckDB UI and `.read` the sql files in order. Every number in
 REPORT.md and FINDINGS.md was computed from `sql/` and independently
 recomputed before being written down.
+
+---
+
+<sub>Repository: <https://github.com/collapseindex/ecommerce-case-study> · grew out of [sql-notes](https://github.com/collapseindex/sql-notes) session 003</sub>
