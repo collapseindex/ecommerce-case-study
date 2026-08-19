@@ -106,12 +106,30 @@
   @media (prefers-reduced-motion: no-preference) {
     .bar { transition: filter .12s ease; }
   }
+  .sitenav {
+    display: flex; flex-wrap: wrap; gap: .35rem 1rem; align-items: center;
+    font-size: .78rem; color: var(--ink-3); margin-bottom: 1.6rem;
+  }
+  .sitenav a { color: var(--ink-2); text-decoration: none; text-underline-offset: 2px; }
+  .sitenav a:hover { text-decoration: underline; }
+  .sitenav .sep { color: var(--grid); }
+  .frame { color: var(--ink-2); font-size: .92rem; margin-top: .55rem; max-width: 64ch; font-style: italic; }
+  .foot.contact { margin-top: 1rem; padding-top: .8rem; border-top: 0; }
 </style>
 
 <div class="page">
+  <nav class="sitenav" aria-label="Site">
+    <a href="https://collapseindex.org/">&larr; collapseindex.org</a>
+    <span class="sep">&middot;</span>
+    <a href="https://collapseindex.org/#case-studies">All case studies</a>
+    <span class="sep">&middot;</span>
+    <a href="mailto:ask@collapseindex.org">ask@collapseindex.org</a>
+  </nav>
   <header>
     <div class="eyebrow">Data analysis · E-commerce case study</div>
     <h1>July Orders Review</h1>
+    <p class="frame">A constructed case study: a deliberately dirty 35-row dataset audited under
+      extreme constraints, because sometimes n=34 is all you get.</p>
     <p class="kicker">Orders July 1&ndash;29, 2026 &middot; <b>34 observed orders</b> after dedupe; order 1029 known missing &middot;
       prepared by <b>Alex Kwon</b> for the Growth Manager &middot; every figure independently recomputed</p>
   </header>
@@ -224,15 +242,21 @@
 
   <section>
     <h2>Corrections applied to the data</h2>
-    <p>Two records need source-system attention. The pair in rows 1 and 2 is consistent with a
-      single paste-over during entry or export: totals were simultaneously
-      <strong>overstated by one known order and understated by one unknown one</strong>.</p>
+    <p><strong>Five planted defects, five found</strong> (the
+      <a href="https://github.com/collapseindex/ecommerce-case-study/blob/main/FINDINGS.md#scorecard">FINDINGS.md scorecard</a>,
+      Q1&ndash;Q4). Three were corrected at load; two are flagged by order id and left in place,
+      because the data cannot tell a typo from a real clearance or a bulk buyer from a drain.
+      The pair in rows 1 and 2 is consistent with a single paste-over during entry or export:
+      totals were simultaneously <strong>overstated by one known order and understated by one
+      unknown one</strong>.</p>
     <div class="overflow"><table>
-      <thead><tr><th>Issue</th><th>Action</th><th>Revenue impact</th></tr></thead>
+      <thead><tr><th>Defect</th><th>Action</th><th>Revenue impact</th></tr></thead>
       <tbody>
-        <tr><td>Order 1028 entered twice</td><td>deduplicated</td><td>&minus;$151.98 gross</td></tr>
-        <tr><td>Order 1029 absent from extract</td><td>requested from source</td><td>unknown; revenue understated</td></tr>
-        <tr><td>Region &ldquo;west&rdquo; on order 1024</td><td>normalized to West</td><td>none (classification only)</td></tr>
+        <tr><td>Order 1028 entered twice (Q1)</td><td>deduplicated</td><td>&minus;$151.98 gross</td></tr>
+        <tr><td>Order 1029 absent from extract (Q1)</td><td>requested from source</td><td>unknown; revenue understated</td></tr>
+        <tr><td>Region &ldquo;west&rdquo; on order 1024 (Q2)</td><td>normalized to West</td><td>none (classification only)</td></tr>
+        <tr><td>Discounts of 50% and 90% on orders 1009, 1025 (Q3)</td><td>flagged, not corrected; records requested</td><td>none until adjudicated</td></tr>
+        <tr><td>Order 1016: 10 mouse units, 42% of mouse volume (Q4)</td><td>flagged; sensitivity run with and without it</td><td>none; drives per-order averages</td></tr>
       </tbody>
     </table></div>
   </section>
@@ -268,6 +292,9 @@
     corrections above. Analysis: Alex Kwon. Full workings, findings with row ids, and runnable SQL:
     the <a href="https://github.com/collapseindex/ecommerce-case-study">ecommerce-case-study</a>
     repository (FINDINGS.md, sql/00&ndash;04).</p>
+  <p class="foot contact">Alex Kwon &middot; <a href="mailto:ask@collapseindex.org">ask@collapseindex.org</a>
+    &middot; <a href="https://collapseindex.org/#case-studies">more case studies</a>
+    &middot; <a href="https://github.com/collapseindex">github.com/collapseindex</a></p>
 </div>
 
 <div id="tip" role="status"></div>
