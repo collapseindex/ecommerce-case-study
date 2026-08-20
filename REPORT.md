@@ -97,3 +97,11 @@ Revenue = units x unit price x (1 - discount%). Returned orders count $0
 revenue with shipping treated as sunk. Contribution = net revenue - shipping;
 manufacturing cost out of scope per the brief. Every figure computed from
 [sql/](sql/) and independently recomputed before publication.
+
+## Citing this work
+
+> Kwon, A. (2026). July Orders Review: an e-commerce data-quality case study. https://github.com/collapseindex/ecommerce-case-study
+
+Machine-readable metadata: [CITATION.cff](CITATION.cff). All case studies:
+[collapseindex.org/#case-studies](https://collapseindex.org/#case-studies) ·
+[github.com/collapseindex](https://github.com/collapseindex).

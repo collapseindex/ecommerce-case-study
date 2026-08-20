@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you reference this case study, please cite it as below."
+title: "July Orders Review: an e-commerce data-quality case study"
+abstract: "A complete analyst working of a deliberately dirty 35-row e-commerce dataset: data-quality audit (5 of 5 planted defects found), business analysis, and the stakeholder report."
+authors:
+  - family-names: "Kwon"
+    given-names: "Alex"
+    email: "ask@collapseindex.org"
+    website: "https://collapseindex.org"
+date-released: "2026-08-17"
+url: "https://collapseindex.org/#case-studies"
+repository-code: "https://github.com/collapseindex/ecommerce-case-study"
+type: software
+keywords:
+  - data quality
+  - data auditing
+  - case study
