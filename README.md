@@ -40,6 +40,16 @@ REPORT.md and FINDINGS.md was computed from `sql/` and independently
 recomputed before being written down.
 
 
+## AI disclosure
+
+Implementation was **AI-assisted**: the queries, working code, and report
+drafts were produced with an LLM in the loop. The **methodology and
+validation framework predate the assistant** and come from the author's
+prior research ([dinostomp](https://github.com/collapseindex/dinostomp)
+and the audit checklists behind these case studies). Verification does
+not rest on anyone's word, human or machine: every number in the reports
+is recomputed from the raw data by the runnable code in this repository.
+
 ## License
 
 Code (SQL, scripts, the notebook) is **Apache-2.0** ([LICENSE](LICENSE)).
