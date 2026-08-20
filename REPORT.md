@@ -102,6 +102,8 @@ manufacturing cost out of scope per the brief. Every figure computed from
 
 > Kwon, A. (2026). July Orders Review: an e-commerce data-quality case study. https://github.com/collapseindex/ecommerce-case-study
 
+License: this report is [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/);
+the code in this repository is Apache-2.0.
 Machine-readable metadata: [CITATION.cff](CITATION.cff). All case studies:
 [collapseindex.org/#case-studies](https://collapseindex.org/#case-studies) ·
 [github.com/collapseindex](https://github.com/collapseindex).

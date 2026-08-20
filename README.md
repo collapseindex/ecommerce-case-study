@@ -39,6 +39,15 @@ Or open the DuckDB UI and `.read` the sql files in order. Every number in
 REPORT.md and FINDINGS.md was computed from `sql/` and independently
 recomputed before being written down.
 
+
+## License
+
+Code (SQL, scripts, the notebook) is **Apache-2.0** ([LICENSE](LICENSE)).
+The written reports and figures (REPORT.md, report.html, FINDINGS.md, this
+README) are **[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)**,
+the same license as my papers: reuse with attribution ("July Orders Review",
+Alex Kwon, github.com/collapseindex/ecommerce-case-study).
+
 ---
 
 <sub>Repository: <https://github.com/collapseindex/ecommerce-case-study> · grew out of [sql-notes](https://github.com/collapseindex/sql-notes) session 003</sub>
